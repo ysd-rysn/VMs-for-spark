@@ -1,0 +1,4 @@
+/.DS_Store
+/.vagrant
+/vm_share/*
+!vm_share/.gitkeep
