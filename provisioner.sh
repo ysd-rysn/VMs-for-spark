@@ -8,10 +8,16 @@ SYNCED_FOLDER="/vm_share"
 SPARK_FOLDER="/usr/local/spark"
 
 if [[ ! -e /etc/.provisioned ]]; then
-	apt -y update
+	apt update
 	# java をインストール
 	apt install -y default-jdk
 	echo 'JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"' >> /etc/environment
+	# sbt をインストール
+	echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list
+	echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list
+	curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
+	apt update
+	apt install -y sbt
 	# apache spark をインストール
 	curl -OL https://dlcdn.apache.org/spark/spark-3.1.2/spark-3.1.2-bin-hadoop3.2.tgz
 	tar -xvf spark-3.1.2-bin-hadoop3.2.tgz -C /usr/local
